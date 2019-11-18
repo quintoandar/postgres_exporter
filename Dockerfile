@@ -1,6 +1,6 @@
 FROM golang:1.12.6-alpine as build
 WORKDIR ${GOPATH}/src/github.com/quintoandar
-RUN apk update && apk add make git curl && git clone -b feature/exporter https://github.com/quintoandar/postgres_exporter.git
+RUN apk update && apk add make git curl && git clone https://github.com/quintoandar/postgres_exporter.git
 WORKDIR ${GOPATH}/src/github.com/quintoandar/postgres_exporter
 RUN go get -u github.com/prometheus/promu
 RUN make build
