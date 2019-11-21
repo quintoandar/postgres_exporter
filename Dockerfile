@@ -7,12 +7,11 @@ RUN make build
 RUN chmod +x postgres_exporter && mv postgres_exporter /tmp/postgres_exporter
 
 
-FROM debian:7.11-slim as final
-RUN useradd -u 20001 postgres_exporter
-
-USER postgres_exporter
+FROM quay.io/prometheus/busybox:latest as final
 
 COPY --from=build ["/tmp/postgres_exporter", "/" ]
+
+WORKDIR /opt/exporter
 
 EXPOSE 9187
 
