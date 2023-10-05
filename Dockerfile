@@ -7,7 +7,7 @@ RUN make release
 RUN chmod +x postgres_exporter && mv postgres_exporter /tmp/postgres_exporter
 
 
-FROM alpine as final
+FROM quay.io/prometheus/busybox:latest as final
 
 COPY --from=build ["/tmp/postgres_exporter", "/" ]
 
