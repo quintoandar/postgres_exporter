@@ -7,11 +7,13 @@ ENV GOARCH=amd64
 RUN make release
 RUN chmod +x postgres_exporter && mv postgres_exporter /tmp/postgres_exporter
 
+
 FROM quay.io/prometheus/busybox:latest as final
-LABEL maintainer="The Prometheus Authors <prometheus-developers@googlegroups.com>"
 
-COPY --from=build ["/tmp/postgres_exporter", "/bin/postgres_exporter" ]
+COPY --from=build ["/tmp/postgres_exporter", "/" ]
 
-EXPOSE     9187
-USER       nobody
-ENTRYPOINT [ "/bin/postgres_exporter" ]
+WORKDIR /opt/exporter
+
+EXPOSE 9187
+
+ENTRYPOINT [ "/postgres_exporter" ]
