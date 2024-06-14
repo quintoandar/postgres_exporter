@@ -3,7 +3,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/percona/postgres_exporter)](https://goreportcard.com/report/github.com/percona/postgres_exporter)
 
 # PostgreSQL Server Exporter
-
+# Testing check-runs
 Prometheus exporter for PostgreSQL server metrics.
 Supported Postgres versions: 9.1 and up.
 
