@@ -1,4 +1,4 @@
-FROM golang:1.12.6-alpine as build
+FROM golang:1.21-alpine as build
 WORKDIR ${GOPATH}/src/github.com/quintoandar
 RUN apk update && apk add make git curl && git clone https://github.com/quintoandar/postgres_exporter.git
 WORKDIR ${GOPATH}/src/github.com/quintoandar/postgres_exporter
