@@ -1,12 +1,18 @@
-ARG ARCH="amd64"
-ARG OS="linux"
-FROM quay.io/prometheus/busybox-${OS}-${ARCH}:latest
-LABEL maintainer="The Prometheus Authors <prometheus-developers@googlegroups.com>"
+FROM golang:1.12.6-alpine as build
+WORKDIR ${GOPATH}/src/github.com/quintoandar
+RUN apk update && apk add make git curl && git clone https://github.com/quintoandar/postgres_exporter.git
+WORKDIR ${GOPATH}/src/github.com/quintoandar/postgres_exporter
+RUN go get -u github.com/prometheus/promu
+RUN make build
+RUN chmod +x postgres_exporter && mv postgres_exporter /tmp/postgres_exporter
 
-ARG ARCH="amd64"
-ARG OS="linux"
-COPY .build/${OS}-${ARCH}/postgres_exporter /bin/postgres_exporter
 
-EXPOSE     9187
-USER       nobody
-ENTRYPOINT [ "/bin/postgres_exporter" ]
+FROM alpine:3.18 as final
+
+COPY --from=build ["/tmp/postgres_exporter", "/" ]
+
+WORKDIR /opt/exporter
+
+EXPOSE 9187
+
+ENTRYPOINT [ "/postgres_exporter" ]
